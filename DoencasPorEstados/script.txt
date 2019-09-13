@@ -18,7 +18,10 @@ print(colMeans(is.na(outbreaks) | outbreaks == "")*100) # Porcentagem de NA's e 
 
 outbreaks$confirmed <- ifelse(grepl('Confirmed', outbreaks$Status), TRUE, FALSE)
 
-contamined_year <- outbreaks %>% filter(confirmed== TRUE & !is.na(Hospitalizations)) %>% group_by(Year) %>% summarise(num_case=sum(Hospitalizations, na.rm = TRUE)) %>% arrange(desc(num_case))
+contamined_year <- outbreaks %>% filter(confirmed== TRUE & !is.na(Hospitalizations)) %>% 
+group_by(Year) %>% summarise(num_case=sum(Hospitalizations, na.rm = TRUE)) %>% 
+arrange(desc(num_case))
+
 ggplot(data = contamined_year, aes(x=reorder(Year, desc(num_case)), y=num_case, fill=num_case)) + geom_bar(stat = 'identity') + geom_text(aes(x=reorder(Year, desc(num_case)),y=num_case, label= num_case), nudge_y = 30) + labs(x= "Anos", y= "Numero de casos", title = " Numero de Hospitalizações por ano") + scale_fill_continuous(name="Numero de casos", labels=comma) + scale_y_continuous(labels = comma)
 
 contamined_month <- outbreaks %>% filter(confirmed== TRUE & !is.na(Hospitalizations)) %>% group_by(Month) %>% summarise(num_case=sum(Hospitalizations, na.rm = TRUE)) %>% arrange(desc(num_case))
